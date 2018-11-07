@@ -1,0 +1,3 @@
+pushd python
+MXNET_LIBRARY_PATH=$(pwd)/../clr-build/libmxnet.so python3 -tt setup.py build install --root=%{buildroot}
+popd

@@ -1,0 +1,33 @@
+From d6d5a525f0a35248c6cb2a3c6a3769f7816af1e4 Mon Sep 17 00:00:00 2001
+From: "Brett T. Warden" <brett.t.warden@intel.com>
+Date: Tue, 6 Nov 2018 16:43:22 -0800
+Subject: [PATCH] Do not download mkldnn
+
+---
+ CMakeLists.txt | 7 -------
+ 1 file changed, 7 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index adff533..c72e6cc 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -218,16 +218,9 @@ if(USE_TENSORRT)
+ endif()
+ 
+ if(USE_MKLDNN)
+-  include(cmake/MklDnn.cmake)
+-  # CPU architecture (e.g., C5) can't run on another architecture (e.g., g3).
+-  if(NOT MSVC)
+-    set(ARCH_OPT_FLAGS "-mtune=generic")
+-  endif()
+   set(WITH_TEST OFF)
+   set(WITH_EXAMPLE OFF)
+-  add_subdirectory(3rdparty/mkldnn)
+ 
+-  include_directories(3rdparty/mkldnn/include)
+   add_definitions(-DUSE_MKL=1)
+   add_definitions(-DCUB_MKL=1)
+   add_definitions(-DMXNET_USE_MKLDNN=1)
+-- 
+2.19.1
+
