@@ -1,2 +1,36 @@
 # This file contains the output files that need %exclude. Full path
 # names, one per line.
+/usr/include/gtest/gtest-death-test.h
+/usr/include/gtest/gtest-message.h
+/usr/include/gtest/gtest-param-test.h
+/usr/include/gtest/gtest-param-test.h.pump
+/usr/include/gtest/gtest-printers.h
+/usr/include/gtest/gtest-spi.h
+/usr/include/gtest/gtest-test-part.h
+/usr/include/gtest/gtest-typed-test.h
+/usr/include/gtest/gtest.h
+/usr/include/gtest/gtest_pred_impl.h
+/usr/include/gtest/gtest_prod.h
+/usr/include/gtest/internal/custom/gtest-port.h
+/usr/include/gtest/internal/custom/gtest-printers.h
+/usr/include/gtest/internal/custom/gtest.h
+/usr/include/gtest/internal/gtest-death-test-internal.h
+/usr/include/gtest/internal/gtest-filepath.h
+/usr/include/gtest/internal/gtest-internal.h
+/usr/include/gtest/internal/gtest-linked_ptr.h
+/usr/include/gtest/internal/gtest-param-util-generated.h
+/usr/include/gtest/internal/gtest-param-util-generated.h.pump
+/usr/include/gtest/internal/gtest-param-util.h
+/usr/include/gtest/internal/gtest-port-arch.h
+/usr/include/gtest/internal/gtest-port.h
+/usr/include/gtest/internal/gtest-string.h
+/usr/include/gtest/internal/gtest-tuple.h
+/usr/include/gtest/internal/gtest-tuple.h.pump
+/usr/include/gtest/internal/gtest-type-util.h
+/usr/include/gtest/internal/gtest-type-util.h.pump
+/usr/include/omp.h
+/usr/lib/libgomp.so
+/usr/lib/libgtest.so
+/usr/lib/libgtest_main.so
+/usr/lib/libiomp5.so
+/usr/lib/libomp.so

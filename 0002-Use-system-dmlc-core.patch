@@ -1,0 +1,35 @@
+From de426ca64bde46b59dfe7b38ffdc0ddb6b4fb978 Mon Sep 17 00:00:00 2001
+From: "Brett T. Warden" <brett.t.warden@intel.com>
+Date: Tue, 13 Nov 2018 09:59:30 -0800
+Subject: [PATCH 2/3] Use system dmlc-core
+
+---
+ CMakeLists.txt | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index c72e6cc..3b9f804 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -289,7 +289,6 @@ include_directories("3rdparty/mshadow")
+ include_directories("3rdparty/cub")
+ include_directories("3rdparty/tvm/nnvm/include")
+ include_directories("3rdparty/tvm/include")
+-include_directories("3rdparty/dmlc-core/include")
+ include_directories("3rdparty/dlpack/include")
+ 
+ # commented out until PR goes through
+@@ -437,10 +436,6 @@ if(USE_CUDNN AND USE_CUDA)
+   endif()
+ endif()
+ 
+-if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/dmlc-core/cmake)
+-  add_subdirectory("3rdparty/dmlc-core")
+-endif()
+-
+ if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/mshadow/cmake)
+   add_subdirectory("3rdparty/mshadow")
+ endif()
+-- 
+2.19.1
+

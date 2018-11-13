@@ -6,13 +6,13 @@
 #
 Name     : mxnet
 Version  : 1.3.0
-Release  : 1
+Release  : 2
 URL      : https://github.com/apache/incubator-mxnet/releases/download/1.3.0/apache-mxnet-src-1.3.0-incubating.tar.gz
 Source0  : https://github.com/apache/incubator-mxnet/releases/download/1.3.0/apache-mxnet-src-1.3.0-incubating.tar.gz
 Source99 : https://github.com/apache/incubator-mxnet/releases/download/1.3.0/apache-mxnet-src-1.3.0-incubating.tar.gz.asc
 Summary  : 'Perl interface to MXNet Gluon ModelZoo'
 Group    : Development/Tools
-License  : Apache-2.0 BSD-3-Clause BSD-3-Clause-LBNL MIT NCSA
+License  : Apache-2.0 BSD-2-Clause BSD-3-Clause BSD-3-Clause-LBNL MIT NCSA
 Requires: mxnet-license = %{version}-%{release}
 Requires: mxnet-python = %{version}-%{release}
 Requires: mxnet-python3 = %{version}-%{release}
@@ -37,6 +37,7 @@ BuildRequires : buildreq-distutils3
 BuildRequires : cmake
 BuildRequires : curl-dev
 BuildRequires : decorator
+BuildRequires : dmlc-core-dev
 BuildRequires : doxygen
 BuildRequires : git
 BuildRequires : glibc-dev
@@ -54,7 +55,9 @@ BuildRequires : pkgconfig(libffi)
 BuildRequires : protobuf-dev
 BuildRequires : python3
 BuildRequires : python3-dev
-Patch1: 0001-Do-not-download-mkldnn.patch
+Patch1: 0001-Use-system-mkldnn.patch
+Patch2: 0002-Use-system-dmlc-core.patch
+Patch3: 0003-Put-.so-in-python-libdir.patch
 
 %description
 This archive contains the distribution AI-MXNet-Gluon-ModelZoo,
@@ -99,13 +102,15 @@ python3 components for the mxnet package.
 %prep
 %setup -q -n apache-mxnet-src-1.3.0-incubating
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1541624429
+export SOURCE_DATE_EPOCH=1542149521
 mkdir -p clr-build
 pushd clr-build
 %cmake .. -DUSE_CUDA=OFF -DUSE_MKLDNN=0 -DUSE_BLAS=openblas
@@ -113,7 +118,7 @@ make  %{?_smp_mflags} VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1541624429
+export SOURCE_DATE_EPOCH=1542149521
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mxnet
 cp 3rdparty/cub/LICENSE.TXT %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_cub_LICENSE.TXT
@@ -138,11 +143,14 @@ cp 3rdparty/tvm/HalideIR/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3
 cp 3rdparty/tvm/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_tvm_LICENSE
 cp 3rdparty/tvm/dlpack/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_tvm_dlpack_LICENSE
 cp 3rdparty/tvm/dmlc-core/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_tvm_dmlc-core_LICENSE
+cp LICENSE %{buildroot}/usr/share/package-licenses/mxnet/LICENSE
 cp NOTICE %{buildroot}/usr/share/package-licenses/mxnet/NOTICE
 cp contrib/clojure-package/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/contrib_clojure-package_LICENSE
 cp cpp-package/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/cpp-package_LICENSE
 cp docker/Dockerfiles/License.md %{buildroot}/usr/share/package-licenses/mxnet/docker_Dockerfiles_License.md
 cp example/gluon/tree_lstm/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/example_gluon_tree_lstm_LICENSE
+cp example/rcnn/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/example_rcnn_LICENSE
+cp python/mxnet/contrib/onnx/mx2onnx/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/python_mxnet_contrib_onnx_mx2onnx_LICENSE
 cp scala-package/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/scala-package_LICENSE
 cp src/operator/contrib/ctc_include/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/src_operator_contrib_ctc_include_LICENSE
 cp src/operator/contrib/ctc_include/contrib/moderngpu/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/src_operator_contrib_ctc_include_contrib_moderngpu_LICENSE
@@ -151,81 +159,50 @@ pushd clr-build
 popd
 ## install_append content
 pushd python
+eu-strip $(pwd)/../clr-build/libmxnet.so
 MXNET_LIBRARY_PATH=$(pwd)/../clr-build/libmxnet.so python3 -tt setup.py build install --root=%{buildroot}
 popd
 ## install_append end
 
 %files
 %defattr(-,root,root,-)
-/usr/doc/.gitignore
-/usr/doc/Doxyfile
-/usr/doc/Makefile
-/usr/doc/README
-/usr/doc/conf.py
-/usr/doc/index.md
-/usr/doc/parameter.md
-/usr/doc/sphinx_util.py
-/usr/mxnet/libmxnet.so
 
 %files dev
 %defattr(-,root,root,-)
-/usr/include/*.h
-/usr/include/dmlc/any.h
-/usr/include/dmlc/array_view.h
-/usr/include/dmlc/base.h
-/usr/include/dmlc/blockingconcurrentqueue.h
-/usr/include/dmlc/common.h
-/usr/include/dmlc/concurrency.h
-/usr/include/dmlc/concurrentqueue.h
-/usr/include/dmlc/config.h
-/usr/include/dmlc/data.h
-/usr/include/dmlc/endian.h
-/usr/include/dmlc/input_split_shuffle.h
-/usr/include/dmlc/io.h
-/usr/include/dmlc/json.h
-/usr/include/dmlc/logging.h
-/usr/include/dmlc/lua.h
-/usr/include/dmlc/memory.h
-/usr/include/dmlc/memory_io.h
-/usr/include/dmlc/omp.h
-/usr/include/dmlc/optional.h
-/usr/include/dmlc/parameter.h
-/usr/include/dmlc/recordio.h
-/usr/include/dmlc/registry.h
-/usr/include/dmlc/serializer.h
-/usr/include/dmlc/thread_group.h
-/usr/include/dmlc/thread_local.h
-/usr/include/dmlc/threadediter.h
-/usr/include/dmlc/timer.h
-/usr/include/dmlc/type_traits.h
-/usr/include/gtest/gtest-death-test.h
-/usr/include/gtest/gtest-message.h
-/usr/include/gtest/gtest-param-test.h
-/usr/include/gtest/gtest-param-test.h.pump
-/usr/include/gtest/gtest-printers.h
-/usr/include/gtest/gtest-spi.h
-/usr/include/gtest/gtest-test-part.h
-/usr/include/gtest/gtest-typed-test.h
-/usr/include/gtest/gtest.h
-/usr/include/gtest/gtest_pred_impl.h
-/usr/include/gtest/gtest_prod.h
-/usr/include/gtest/internal/custom/gtest-port.h
-/usr/include/gtest/internal/custom/gtest-printers.h
-/usr/include/gtest/internal/custom/gtest.h
-/usr/include/gtest/internal/gtest-death-test-internal.h
-/usr/include/gtest/internal/gtest-filepath.h
-/usr/include/gtest/internal/gtest-internal.h
-/usr/include/gtest/internal/gtest-linked_ptr.h
-/usr/include/gtest/internal/gtest-param-util-generated.h
-/usr/include/gtest/internal/gtest-param-util-generated.h.pump
-/usr/include/gtest/internal/gtest-param-util.h
-/usr/include/gtest/internal/gtest-port-arch.h
-/usr/include/gtest/internal/gtest-port.h
-/usr/include/gtest/internal/gtest-string.h
-/usr/include/gtest/internal/gtest-tuple.h
-/usr/include/gtest/internal/gtest-tuple.h.pump
-/usr/include/gtest/internal/gtest-type-util.h
-/usr/include/gtest/internal/gtest-type-util.h.pump
+%exclude /usr/include/gtest/gtest-death-test.h
+%exclude /usr/include/gtest/gtest-message.h
+%exclude /usr/include/gtest/gtest-param-test.h
+%exclude /usr/include/gtest/gtest-param-test.h.pump
+%exclude /usr/include/gtest/gtest-printers.h
+%exclude /usr/include/gtest/gtest-spi.h
+%exclude /usr/include/gtest/gtest-test-part.h
+%exclude /usr/include/gtest/gtest-typed-test.h
+%exclude /usr/include/gtest/gtest.h
+%exclude /usr/include/gtest/gtest_pred_impl.h
+%exclude /usr/include/gtest/gtest_prod.h
+%exclude /usr/include/gtest/internal/custom/gtest-port.h
+%exclude /usr/include/gtest/internal/custom/gtest-printers.h
+%exclude /usr/include/gtest/internal/custom/gtest.h
+%exclude /usr/include/gtest/internal/gtest-death-test-internal.h
+%exclude /usr/include/gtest/internal/gtest-filepath.h
+%exclude /usr/include/gtest/internal/gtest-internal.h
+%exclude /usr/include/gtest/internal/gtest-linked_ptr.h
+%exclude /usr/include/gtest/internal/gtest-param-util-generated.h
+%exclude /usr/include/gtest/internal/gtest-param-util-generated.h.pump
+%exclude /usr/include/gtest/internal/gtest-param-util.h
+%exclude /usr/include/gtest/internal/gtest-port-arch.h
+%exclude /usr/include/gtest/internal/gtest-port.h
+%exclude /usr/include/gtest/internal/gtest-string.h
+%exclude /usr/include/gtest/internal/gtest-tuple.h
+%exclude /usr/include/gtest/internal/gtest-tuple.h.pump
+%exclude /usr/include/gtest/internal/gtest-type-util.h
+%exclude /usr/include/gtest/internal/gtest-type-util.h.pump
+%exclude /usr/include/omp.h
+%exclude /usr/lib/libgomp.so
+%exclude /usr/lib/libgtest.so
+%exclude /usr/lib/libgtest_main.so
+%exclude /usr/lib/libiomp5.so
+%exclude /usr/lib/libomp.so
 /usr/include/mxnet/base.h
 /usr/include/mxnet/c_api.h
 /usr/include/mxnet/c_predict_api.h
@@ -243,12 +220,6 @@ popd
 /usr/include/mxnet/rtc.h
 /usr/include/mxnet/storage.h
 /usr/include/mxnet/tensor_blob.h
-/usr/lib/libgomp.so
-/usr/lib/libgtest.so
-/usr/lib/libgtest_main.so
-/usr/lib/libiomp5.so
-/usr/lib/libomp.so
-/usr/lib64/libdmlc.so
 /usr/lib64/libmxnet.so
 
 %files license
@@ -275,11 +246,14 @@ popd
 /usr/share/package-licenses/mxnet/3rdparty_tvm_LICENSE
 /usr/share/package-licenses/mxnet/3rdparty_tvm_dlpack_LICENSE
 /usr/share/package-licenses/mxnet/3rdparty_tvm_dmlc-core_LICENSE
+/usr/share/package-licenses/mxnet/LICENSE
 /usr/share/package-licenses/mxnet/NOTICE
 /usr/share/package-licenses/mxnet/contrib_clojure-package_LICENSE
 /usr/share/package-licenses/mxnet/cpp-package_LICENSE
 /usr/share/package-licenses/mxnet/docker_Dockerfiles_License.md
 /usr/share/package-licenses/mxnet/example_gluon_tree_lstm_LICENSE
+/usr/share/package-licenses/mxnet/example_rcnn_LICENSE
+/usr/share/package-licenses/mxnet/python_mxnet_contrib_onnx_mx2onnx_LICENSE
 /usr/share/package-licenses/mxnet/scala-package_LICENSE
 /usr/share/package-licenses/mxnet/src_operator_contrib_ctc_include_LICENSE
 /usr/share/package-licenses/mxnet/src_operator_contrib_ctc_include_contrib_moderngpu_LICENSE
