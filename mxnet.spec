@@ -6,7 +6,7 @@
 #
 Name     : mxnet
 Version  : 1.3.0
-Release  : 2
+Release  : 3
 URL      : https://github.com/apache/incubator-mxnet/releases/download/1.3.0/apache-mxnet-src-1.3.0-incubating.tar.gz
 Source0  : https://github.com/apache/incubator-mxnet/releases/download/1.3.0/apache-mxnet-src-1.3.0-incubating.tar.gz
 Source99 : https://github.com/apache/incubator-mxnet/releases/download/1.3.0/apache-mxnet-src-1.3.0-incubating.tar.gz.asc
@@ -19,10 +19,12 @@ Requires: mxnet-python3 = %{version}-%{release}
 Requires: PyYAML
 Requires: decorator
 Requires: h5py
+Requires: mxnet
 Requires: nose
 Requires: numpy
 Requires: onnx
 Requires: pylint
+Requires: python-graphviz
 Requires: python-mock
 Requires: requests
 Requires: scipy
@@ -53,6 +55,7 @@ BuildRequires : pkg-config
 BuildRequires : pkgconfig(jemalloc)
 BuildRequires : pkgconfig(libffi)
 BuildRequires : protobuf-dev
+BuildRequires : python-graphviz
 BuildRequires : python3
 BuildRequires : python3-dev
 Patch1: 0001-Use-system-mkldnn.patch
@@ -63,6 +66,14 @@ Patch3: 0003-Put-.so-in-python-libdir.patch
 This archive contains the distribution AI-MXNet-Gluon-ModelZoo,
 version 1.32:
 Perl interface to MXNet Gluon ModelZoo, a collection of pretrained machine learning models for computer vision.
+
+%package abi
+Summary: abi components for the mxnet package.
+Group: Default
+
+%description abi
+abi components for the mxnet package.
+
 
 %package dev
 Summary: dev components for the mxnet package.
@@ -110,7 +121,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1542149521
+export SOURCE_DATE_EPOCH=1542252640
 mkdir -p clr-build
 pushd clr-build
 %cmake .. -DUSE_CUDA=OFF -DUSE_MKLDNN=0 -DUSE_BLAS=openblas
@@ -118,7 +129,7 @@ make  %{?_smp_mflags} VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1542149521
+export SOURCE_DATE_EPOCH=1542252640
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mxnet
 cp 3rdparty/cub/LICENSE.TXT %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_cub_LICENSE.TXT
@@ -166,6 +177,10 @@ popd
 
 %files
 %defattr(-,root,root,-)
+
+%files abi
+%defattr(-,root,root,-)
+/usr/share/abi/libmxnet.so.abi
 
 %files dev
 %defattr(-,root,root,-)
