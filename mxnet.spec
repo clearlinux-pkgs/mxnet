@@ -6,7 +6,7 @@
 #
 Name     : mxnet
 Version  : 1.3.0
-Release  : 3
+Release  : 4
 URL      : https://github.com/apache/incubator-mxnet/releases/download/1.3.0/apache-mxnet-src-1.3.0-incubating.tar.gz
 Source0  : https://github.com/apache/incubator-mxnet/releases/download/1.3.0/apache-mxnet-src-1.3.0-incubating.tar.gz
 Source99 : https://github.com/apache/incubator-mxnet/releases/download/1.3.0/apache-mxnet-src-1.3.0-incubating.tar.gz.asc
@@ -61,6 +61,7 @@ BuildRequires : python3-dev
 Patch1: 0001-Use-system-mkldnn.patch
 Patch2: 0002-Use-system-dmlc-core.patch
 Patch3: 0003-Put-.so-in-python-libdir.patch
+Patch4: deps.patch
 
 %description
 This archive contains the distribution AI-MXNet-Gluon-ModelZoo,
@@ -115,13 +116,14 @@ python3 components for the mxnet package.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1542252640
+export SOURCE_DATE_EPOCH=1542256265
 mkdir -p clr-build
 pushd clr-build
 %cmake .. -DUSE_CUDA=OFF -DUSE_MKLDNN=0 -DUSE_BLAS=openblas
@@ -129,7 +131,7 @@ make  %{?_smp_mflags} VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1542252640
+export SOURCE_DATE_EPOCH=1542256265
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mxnet
 cp 3rdparty/cub/LICENSE.TXT %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_cub_LICENSE.TXT
