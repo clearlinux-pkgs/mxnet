@@ -3,3 +3,5 @@
 apache-spark
 dmlc-core-dev
 python-graphviz
+hwloc-dev
+openblas
