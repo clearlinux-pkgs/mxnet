@@ -4,7 +4,7 @@
 #
 Name     : mxnet
 Version  : 1.4.0.rc0
-Release  : 7
+Release  : 8
 URL      : https://github.com/apache/incubator-mxnet/releases/download/1.4.0.rc0/apache-mxnet-src-1.4.0.rc0-incubating.tar.gz
 Source0  : https://github.com/apache/incubator-mxnet/releases/download/1.4.0.rc0/apache-mxnet-src-1.4.0.rc0-incubating.tar.gz
 Summary  : 'Perl interface to MXNet Gluon ModelZoo'
