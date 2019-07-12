@@ -3,4 +3,4 @@
 coremltools
 mxnet
 tensorrt
-opencv-dev
+pycuda

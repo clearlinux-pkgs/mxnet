@@ -2,3 +2,4 @@
 0002-Use-system-dmlc-core.patch
 #0003-Put-.so-in-python-libdir.patch
 #deps.patch
+0004-Add-types_c.h-and-constants_c.h.patch

@@ -5,3 +5,4 @@ dmlc-core-dev
 python-graphviz
 hwloc-dev
 openblas
+opencv
