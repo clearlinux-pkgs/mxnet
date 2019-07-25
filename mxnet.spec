@@ -5,18 +5,19 @@
 # Source0 file verified with key 0x91052D922E28A38F (zhasheng@apache.org)
 #
 Name     : mxnet
-Version  : 1.4.1
-Release  : 10
-URL      : https://github.com/apache/incubator-mxnet/releases/download/1.4.1/apache-mxnet-src-1.4.1-incubating.tar.gz
-Source0  : https://github.com/apache/incubator-mxnet/releases/download/1.4.1/apache-mxnet-src-1.4.1-incubating.tar.gz
-Source99 : https://github.com/apache/incubator-mxnet/releases/download/1.4.1/apache-mxnet-src-1.4.1-incubating.tar.gz.asc
-Summary  : 'Swig interface to nnvm c api'
+Version  : 1.5.0
+Release  : 11
+URL      : https://github.com/apache/incubator-mxnet/releases/download/1.5.0/apache-mxnet-src-1.5.0-incubating.tar.gz
+Source0  : https://github.com/apache/incubator-mxnet/releases/download/1.5.0/apache-mxnet-src-1.5.0-incubating.tar.gz
+Source99 : https://github.com/apache/incubator-mxnet/releases/download/1.5.0/apache-mxnet-src-1.5.0-incubating.tar.gz.asc
+Summary  : 'Swig interface to mxnet c api'
 Group    : Development/Tools
-License  : Apache-2.0 BSD-2-Clause BSD-3-Clause BSD-3-Clause-LBNL MIT NCSA
+License  : Apache-2.0 BSD-2-Clause BSD-3-Clause BSD-3-Clause-LBNL MIT NCSA Unlicense
 Requires: mxnet-license = %{version}-%{release}
 Requires: mxnet-python = %{version}-%{release}
 Requires: mxnet-python3 = %{version}-%{release}
 Requires: PyYAML
+Requires: attrs
 Requires: decorator
 Requires: docker
 Requires: mxnet
@@ -26,11 +27,14 @@ Requires: python-graphviz
 BuildRequires : PyYAML
 BuildRequires : Vulkan-Headers-dev Vulkan-Loader-dev Vulkan-Tools
 BuildRequires : apache-spark
+BuildRequires : attrs
 BuildRequires : beignet-dev
 BuildRequires : boost-dev
 BuildRequires : buildreq-cmake
 BuildRequires : buildreq-cpan
 BuildRequires : buildreq-distutils3
+BuildRequires : buildreq-golang
+BuildRequires : buildreq-meson
 BuildRequires : cmake
 BuildRequires : curl-dev
 BuildRequires : decorator
@@ -59,13 +63,10 @@ BuildRequires : python-graphviz
 BuildRequires : python3
 BuildRequires : python3-dev
 Patch1: 0002-Use-system-dmlc-core.patch
-Patch2: 0004-Add-types_c.h-and-constants_c.h.patch
 
 %description
-AI-NNVMCAPI version 1.3
-=====================
-Swig interface to MXNet c api.
-INSTALLATION
+The Google Mock class generator is an application that is part of cppclean.
+For more information about cppclean, visit http://code.google.com/p/cppclean/
 
 %package dev
 Summary: dev components for the mxnet package.
@@ -104,16 +105,15 @@ python3 components for the mxnet package.
 
 
 %prep
-%setup -q -n apache-mxnet-src-1.4.1-incubating
+%setup -q -n apache-mxnet-src-1.5.0-incubating
 %patch1 -p1
-%patch2 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1562889675
+export SOURCE_DATE_EPOCH=1564072151
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -121,17 +121,16 @@ export CFLAGS="$CFLAGS -fno-lto "
 export FCFLAGS="$CFLAGS -fno-lto "
 export FFLAGS="$CFLAGS -fno-lto "
 export CXXFLAGS="$CXXFLAGS -fno-lto "
-%cmake .. -DUSE_CUDA=OFF -DUSE_MKLDNN=0 -DUSE_BLAS=openblas
+%cmake .. -DUSE_CUDA=OFF -DUSE_MKLDNN=0 -DUSE_BLAS=open
 make  %{?_smp_mflags} VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1562889675
+export SOURCE_DATE_EPOCH=1564072151
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mxnet
 cp 3rdparty/ctc_include/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_ctc_include_LICENSE
 cp 3rdparty/ctc_include/contrib/moderngpu/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_ctc_include_contrib_moderngpu_LICENSE
-cp 3rdparty/cub/LICENSE.TXT %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_cub_LICENSE.TXT
 cp 3rdparty/dlpack/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_dlpack_LICENSE
 cp 3rdparty/dmlc-core/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_dmlc-core_LICENSE
 cp 3rdparty/googletest/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_googletest_LICENSE
@@ -142,6 +141,7 @@ cp 3rdparty/mkldnn/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdpart
 cp 3rdparty/mkldnn/src/cpu/xbyak/COPYRIGHT %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_mkldnn_src_cpu_xbyak_COPYRIGHT
 cp 3rdparty/mkldnn/tests/gtests/gtest/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_mkldnn_tests_gtests_gtest_LICENSE
 cp 3rdparty/mshadow/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_mshadow_LICENSE
+cp 3rdparty/nvidia_cub/LICENSE.TXT %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_nvidia_cub_LICENSE.TXT
 cp 3rdparty/onnx-tensorrt/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_onnx-tensorrt_LICENSE
 cp 3rdparty/onnx-tensorrt/third_party/onnx/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_onnx-tensorrt_third_party_onnx_LICENSE
 cp 3rdparty/onnx-tensorrt/third_party/onnx/third_party/benchmark/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_onnx-tensorrt_third_party_onnx_third_party_benchmark_LICENSE
@@ -153,8 +153,8 @@ cp 3rdparty/ps-lite/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdpar
 cp 3rdparty/tvm/3rdparty/HalideIR/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_tvm_3rdparty_HalideIR_LICENSE
 cp 3rdparty/tvm/3rdparty/dlpack/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_tvm_3rdparty_dlpack_LICENSE
 cp 3rdparty/tvm/3rdparty/dmlc-core/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_tvm_3rdparty_dmlc-core_LICENSE
+cp 3rdparty/tvm/3rdparty/rang/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_tvm_3rdparty_rang_LICENSE
 cp 3rdparty/tvm/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_tvm_LICENSE
-cp LICENSE %{buildroot}/usr/share/package-licenses/mxnet/LICENSE
 cp NOTICE %{buildroot}/usr/share/package-licenses/mxnet/NOTICE
 cp contrib/clojure-package/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/contrib_clojure-package_LICENSE
 cp cpp-package/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/cpp-package_LICENSE
@@ -183,6 +183,90 @@ popd
 %exclude /usr/lib/libgomp.so
 %exclude /usr/lib/libiomp5.so
 %exclude /usr/lib/libomp.so
+/usr/include/dlpack/dlpack.h
+/usr/include/dmlc/any.h
+/usr/include/dmlc/array_view.h
+/usr/include/dmlc/base.h
+/usr/include/dmlc/blockingconcurrentqueue.h
+/usr/include/dmlc/build_config.h
+/usr/include/dmlc/common.h
+/usr/include/dmlc/concurrency.h
+/usr/include/dmlc/concurrentqueue.h
+/usr/include/dmlc/config.h
+/usr/include/dmlc/data.h
+/usr/include/dmlc/endian.h
+/usr/include/dmlc/filesystem.h
+/usr/include/dmlc/input_split_shuffle.h
+/usr/include/dmlc/io.h
+/usr/include/dmlc/json.h
+/usr/include/dmlc/logging.h
+/usr/include/dmlc/lua.h
+/usr/include/dmlc/memory.h
+/usr/include/dmlc/memory_io.h
+/usr/include/dmlc/omp.h
+/usr/include/dmlc/optional.h
+/usr/include/dmlc/parameter.h
+/usr/include/dmlc/recordio.h
+/usr/include/dmlc/registry.h
+/usr/include/dmlc/serializer.h
+/usr/include/dmlc/strtonum.h
+/usr/include/dmlc/thread_group.h
+/usr/include/dmlc/thread_local.h
+/usr/include/dmlc/threadediter.h
+/usr/include/dmlc/timer.h
+/usr/include/dmlc/type_traits.h
+/usr/include/mshadow/README.md
+/usr/include/mshadow/base.h
+/usr/include/mshadow/cuda/reduce.cuh
+/usr/include/mshadow/cuda/tensor_gpu-inl.cuh
+/usr/include/mshadow/dot_engine-inl.h
+/usr/include/mshadow/expr_engine-inl.h
+/usr/include/mshadow/expr_scalar-inl.h
+/usr/include/mshadow/expression.h
+/usr/include/mshadow/extension.h
+/usr/include/mshadow/extension/broadcast.h
+/usr/include/mshadow/extension/broadcast_with_axis.h
+/usr/include/mshadow/extension/channel_pool.h
+/usr/include/mshadow/extension/channel_unpool.h
+/usr/include/mshadow/extension/choose.h
+/usr/include/mshadow/extension/complex.h
+/usr/include/mshadow/extension/concat.h
+/usr/include/mshadow/extension/crop.h
+/usr/include/mshadow/extension/fill.h
+/usr/include/mshadow/extension/flip.h
+/usr/include/mshadow/extension/implicit_gemm.h
+/usr/include/mshadow/extension/mask.h
+/usr/include/mshadow/extension/mirror.h
+/usr/include/mshadow/extension/one_hot.h
+/usr/include/mshadow/extension/pack_col2patch.h
+/usr/include/mshadow/extension/pad.h
+/usr/include/mshadow/extension/range.h
+/usr/include/mshadow/extension/reduce_with_axis.h
+/usr/include/mshadow/extension/reduceto1d.h
+/usr/include/mshadow/extension/reshape.h
+/usr/include/mshadow/extension/slice.h
+/usr/include/mshadow/extension/slice_ex.h
+/usr/include/mshadow/extension/spatial_pool.h
+/usr/include/mshadow/extension/spatial_unpool.h
+/usr/include/mshadow/extension/spatial_upsampling_nearest.h
+/usr/include/mshadow/extension/swapaxis.h
+/usr/include/mshadow/extension/take.h
+/usr/include/mshadow/extension/take_grad.h
+/usr/include/mshadow/extension/transpose.h
+/usr/include/mshadow/extension/unpack_patch2col.h
+/usr/include/mshadow/half.h
+/usr/include/mshadow/half2.h
+/usr/include/mshadow/io.h
+/usr/include/mshadow/logging.h
+/usr/include/mshadow/packet-inl.h
+/usr/include/mshadow/packet/plain-inl.h
+/usr/include/mshadow/packet/sse-inl.h
+/usr/include/mshadow/random.h
+/usr/include/mshadow/stream_gpu-inl.h
+/usr/include/mshadow/tensor.h
+/usr/include/mshadow/tensor_container.h
+/usr/include/mshadow/tensor_cpu-inl.h
+/usr/include/mshadow/tensor_gpu-inl.h
 /usr/include/mxnet/base.h
 /usr/include/mxnet/c_api.h
 /usr/include/mxnet/c_api_error.h
@@ -194,6 +278,7 @@ popd
 /usr/include/mxnet/imperative.h
 /usr/include/mxnet/io.h
 /usr/include/mxnet/kvstore.h
+/usr/include/mxnet/libinfo.h
 /usr/include/mxnet/ndarray.h
 /usr/include/mxnet/op_attr_types.h
 /usr/include/mxnet/operator.h
@@ -203,13 +288,31 @@ popd
 /usr/include/mxnet/rtc.h
 /usr/include/mxnet/storage.h
 /usr/include/mxnet/tensor_blob.h
+/usr/include/mxnet/tuple.h
+/usr/include/nnvm/base.h
+/usr/include/nnvm/c_api.h
+/usr/include/nnvm/compiler/op_attr_types.h
+/usr/include/nnvm/compiler/packed_func_ext.h
+/usr/include/nnvm/compiler/util.h
+/usr/include/nnvm/graph.h
+/usr/include/nnvm/graph_attr_types.h
+/usr/include/nnvm/layout.h
+/usr/include/nnvm/node.h
+/usr/include/nnvm/op.h
+/usr/include/nnvm/op_attr_types.h
+/usr/include/nnvm/pass.h
+/usr/include/nnvm/pass_functions.h
+/usr/include/nnvm/symbolic.h
+/usr/include/nnvm/top/README
+/usr/include/nnvm/top/nn.h
+/usr/include/nnvm/top/tensor.h
+/usr/include/nnvm/tuple.h
 /usr/lib64/libmxnet.so
 
 %files license
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/mxnet/3rdparty_ctc_include_LICENSE
 /usr/share/package-licenses/mxnet/3rdparty_ctc_include_contrib_moderngpu_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_cub_LICENSE.TXT
 /usr/share/package-licenses/mxnet/3rdparty_dlpack_LICENSE
 /usr/share/package-licenses/mxnet/3rdparty_dmlc-core_LICENSE
 /usr/share/package-licenses/mxnet/3rdparty_googletest_LICENSE
@@ -220,6 +323,7 @@ popd
 /usr/share/package-licenses/mxnet/3rdparty_mkldnn_src_cpu_xbyak_COPYRIGHT
 /usr/share/package-licenses/mxnet/3rdparty_mkldnn_tests_gtests_gtest_LICENSE
 /usr/share/package-licenses/mxnet/3rdparty_mshadow_LICENSE
+/usr/share/package-licenses/mxnet/3rdparty_nvidia_cub_LICENSE.TXT
 /usr/share/package-licenses/mxnet/3rdparty_onnx-tensorrt_LICENSE
 /usr/share/package-licenses/mxnet/3rdparty_onnx-tensorrt_third_party_onnx_LICENSE
 /usr/share/package-licenses/mxnet/3rdparty_onnx-tensorrt_third_party_onnx_third_party_benchmark_LICENSE
@@ -231,8 +335,8 @@ popd
 /usr/share/package-licenses/mxnet/3rdparty_tvm_3rdparty_HalideIR_LICENSE
 /usr/share/package-licenses/mxnet/3rdparty_tvm_3rdparty_dlpack_LICENSE
 /usr/share/package-licenses/mxnet/3rdparty_tvm_3rdparty_dmlc-core_LICENSE
+/usr/share/package-licenses/mxnet/3rdparty_tvm_3rdparty_rang_LICENSE
 /usr/share/package-licenses/mxnet/3rdparty_tvm_LICENSE
-/usr/share/package-licenses/mxnet/LICENSE
 /usr/share/package-licenses/mxnet/NOTICE
 /usr/share/package-licenses/mxnet/contrib_clojure-package_LICENSE
 /usr/share/package-licenses/mxnet/cpp-package_LICENSE
