@@ -6,11 +6,11 @@
 #
 Name     : mxnet
 Version  : 1.5.0
-Release  : 11
+Release  : 12
 URL      : https://github.com/apache/incubator-mxnet/releases/download/1.5.0/apache-mxnet-src-1.5.0-incubating.tar.gz
 Source0  : https://github.com/apache/incubator-mxnet/releases/download/1.5.0/apache-mxnet-src-1.5.0-incubating.tar.gz
 Source99 : https://github.com/apache/incubator-mxnet/releases/download/1.5.0/apache-mxnet-src-1.5.0-incubating.tar.gz.asc
-Summary  : 'Swig interface to mxnet c api'
+Summary  : 'Perl interface to MXNet machine learning library'
 Group    : Development/Tools
 License  : Apache-2.0 BSD-2-Clause BSD-3-Clause BSD-3-Clause-LBNL MIT NCSA Unlicense
 Requires: mxnet-license = %{version}-%{release}
@@ -28,7 +28,6 @@ BuildRequires : PyYAML
 BuildRequires : Vulkan-Headers-dev Vulkan-Loader-dev Vulkan-Tools
 BuildRequires : apache-spark
 BuildRequires : attrs
-BuildRequires : beignet-dev
 BuildRequires : boost-dev
 BuildRequires : buildreq-cmake
 BuildRequires : buildreq-cpan
@@ -50,6 +49,7 @@ BuildRequires : mxnet
 BuildRequires : numpy
 BuildRequires : onnx
 BuildRequires : openblas
+BuildRequires : opencl-headers-dev
 BuildRequires : opencv
 BuildRequires : opencv-dev
 BuildRequires : openjdk9-dev
@@ -65,8 +65,9 @@ BuildRequires : python3-dev
 Patch1: 0002-Use-system-dmlc-core.patch
 
 %description
-The Google Mock class generator is an application that is part of cppclean.
-For more information about cppclean, visit http://code.google.com/p/cppclean/
+This archive contains the distribution AI-MXNet,
+version 1.4:
+Perl interface to MXNet machine learning library
 
 %package dev
 Summary: dev components for the mxnet package.
@@ -113,7 +114,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1564072151
+export SOURCE_DATE_EPOCH=1564512287
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -126,7 +127,7 @@ make  %{?_smp_mflags} VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1564072151
+export SOURCE_DATE_EPOCH=1564512287
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mxnet
 cp 3rdparty/ctc_include/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_ctc_include_LICENSE

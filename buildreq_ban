@@ -4,3 +4,4 @@ coremltools
 mxnet
 tensorrt
 pycuda
+beignet-dev

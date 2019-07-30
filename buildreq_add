@@ -6,3 +6,4 @@ python-graphviz
 hwloc-dev
 openblas
 opencv
+opencl-headers-dev
