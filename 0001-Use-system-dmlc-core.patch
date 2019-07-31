@@ -1,0 +1,46 @@
+From a155e8a4efb902322349445c96d64df38800303f Mon Sep 17 00:00:00 2001
+From: kimsehun <se.hun.kim@intel.com>
+Date: Wed, 31 Jul 2019 05:59:55 +0000
+Subject: [PATCH] Use system dmlc-core
+
+Use system dmle-core and delete installation
+
+Signed-off-by: kimsehun <se.hun.kim@intel.com>
+---
+ CMakeLists.txt | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 2142a09d6..ba83a11dc 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -356,7 +356,6 @@ include_directories("3rdparty/mshadow")
+ include_directories("3rdparty/nvidia_cub")
+ include_directories("3rdparty/tvm/nnvm/include")
+ include_directories("3rdparty/tvm/include")
+-include_directories("3rdparty/dmlc-core/include")
+ include_directories("3rdparty/dlpack/include")
+ 
+ # commented out until PR goes through
+@@ -506,10 +505,6 @@ if(USE_CUDNN AND USE_CUDA)
+   endif()
+ endif()
+ 
+-if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/dmlc-core/cmake)
+-  add_subdirectory("3rdparty/dmlc-core")
+-endif()
+-
+ if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/mshadow/cmake)
+   add_subdirectory("3rdparty/mshadow")
+ endif()
+@@ -780,7 +775,6 @@ install(TARGETS ${MXNET_INSTALL_TARGETS}
+ #       https://cmake.org/cmake/help/v3.0/module/GNUInstallDirs.html
+ 
+ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/dlpack/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/dmlc-core/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+ if(USE_MKLDNN)
+   install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/mkldnn/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+ endif()
+-- 
+2.22.0
+
