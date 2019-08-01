@@ -1,26 +1,27 @@
-From a9bc120d241fde9eb03513ed95e5fd5817987fe0 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Tue, 13 Nov 2018 14:32:53 -0800
-Subject: [PATCH 3/3] Put .so in python libdir
+Subject: [PATCH] Put .so in python libdir
 
+[Update for 2019-08-01]: Rebased against 1.5.0 release; moved the import
+statement to a location less likely to produce future rebase conflicts.
 ---
- python/setup.py | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ python/setup.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/python/setup.py b/python/setup.py
-index add5e66..7946834 100644
+index e8545a5..43311c7 100644
 --- a/python/setup.py
 +++ b/python/setup.py
-@@ -31,6 +31,8 @@ else:
-     kwargs = {'install_requires': ['numpy<=1.15.0,>=1.8.2', 'requests<2.19.0,>=2.18.4', 'graphviz<0.9.0,>=0.8.1'], 'zip_safe': False}
- from setuptools import find_packages
- 
+@@ -21,6 +21,7 @@ from __future__ import absolute_import
+ import os
+ import sys
+ from setuptools import find_packages # This must precede distutils
 +from distutils.sysconfig import get_python_lib
-+
- with_cython = False
- if '--with-cython' in sys.argv:
-     with_cython = True
-@@ -103,7 +105,7 @@ setup(name='mxnet',
+ 
+ # need to use distutils.core for correct placement of cython dll
+ kwargs = {}
+@@ -110,7 +111,7 @@ setup(name='mxnet',
        version=__version__,
        description=open(os.path.join(CURRENT_DIR, 'README.md')).read(),
        packages=find_packages(),
@@ -29,6 +30,3 @@ index add5e66..7946834 100644
        url='https://github.com/apache/incubator-mxnet',
        ext_modules=config_cython(),
        classifiers=[
--- 
-2.19.1
-

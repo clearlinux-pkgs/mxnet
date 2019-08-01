@@ -1,4 +1,3 @@
-#0001-Use-system-mkldnn.patch
-0001-Use-system-dmlc-core.patch
-#0003-Put-.so-in-python-libdir.patch
-#deps.patch
+0001-Use-system-mkldnn.patch
+0002-Use-system-dmlc-core.patch
+0003-Put-.so-in-python-libdir.patch
