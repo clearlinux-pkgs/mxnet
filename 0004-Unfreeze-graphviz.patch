@@ -1,0 +1,54 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Patrick McCarty <patrick.mccarty@intel.com>
+Date: Fri, 11 Oct 2019 14:38:03 -0700
+Subject: [PATCH] Unfreeze graphviz
+
+The python-graphviz package has had several releases since the 0.8.*
+timeframe over the past year, so we are bumping it forward. mxnet is the
+only package in the distro requiring an older version.
+
+Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
+---
+ ci/qemu/mxnet_requirements.txt | 2 +-
+ python/setup.py                | 2 +-
+ tools/pip/setup.py             | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/ci/qemu/mxnet_requirements.txt b/ci/qemu/mxnet_requirements.txt
+index 2ab0fd9..9d28a0f 100644
+--- a/ci/qemu/mxnet_requirements.txt
++++ b/ci/qemu/mxnet_requirements.txt
+@@ -1,6 +1,6 @@
+ urllib3<1.23,>=1.21.1
+ requests<2.19.0,>=2.18.4
+-graphviz<0.9.0,>=0.8.1
++graphviz
+ numpy>1.16.0,<2.0.0
+ mock
+ nose
+diff --git a/python/setup.py b/python/setup.py
+index 43311c7..3fec015 100644
+--- a/python/setup.py
++++ b/python/setup.py
+@@ -31,7 +31,7 @@ if "--inplace" in sys.argv:
+ else:
+     from setuptools import setup
+     from setuptools.extension import Extension
+-    kwargs = {'install_requires': ['numpy>1.16.0,<2.0.0', 'requests>=2.20.0,<3', 'graphviz<0.9.0,>=0.8.1'], 'zip_safe': False}
++    kwargs = {'install_requires': ['numpy>1.16.0,<2.0.0', 'requests>=2.20.0,<3', 'graphviz'], 'zip_safe': False}
+ 
+ with_cython = False
+ if '--with-cython' in sys.argv:
+diff --git a/tools/pip/setup.py b/tools/pip/setup.py
+index 3905a69..bef5c88 100644
+--- a/tools/pip/setup.py
++++ b/tools/pip/setup.py
+@@ -54,7 +54,7 @@ class BinaryDistribution(Distribution):
+ DEPENDENCIES = [
+     'numpy>1.16.0,<2.0.0',
+     'requests>=2.20.0',
+-    'graphviz<0.9.0,>=0.8.1'
++    'graphviz'
+ ]
+ 
+ shutil.rmtree(os.path.join(CURRENT_DIR, 'mxnet'), ignore_errors=True)

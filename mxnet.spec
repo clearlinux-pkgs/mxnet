@@ -6,7 +6,7 @@
 #
 Name     : mxnet
 Version  : 1.5.0
-Release  : 14
+Release  : 15
 URL      : https://github.com/apache/incubator-mxnet/releases/download/1.5.0/apache-mxnet-src-1.5.0-incubating.tar.gz
 Source0  : https://github.com/apache/incubator-mxnet/releases/download/1.5.0/apache-mxnet-src-1.5.0-incubating.tar.gz
 Source1 : https://github.com/apache/incubator-mxnet/releases/download/1.5.0/apache-mxnet-src-1.5.0-incubating.tar.gz.asc
@@ -65,6 +65,7 @@ BuildRequires : python3-dev
 Patch1: 0001-Use-system-mkldnn.patch
 Patch2: 0002-Use-system-dmlc-core.patch
 Patch3: 0003-Put-.so-in-python-libdir.patch
+Patch4: 0004-Unfreeze-graphviz.patch
 
 %description
 This archive contains the distribution AI-MXNet-Gluon-ModelZoo,
@@ -112,13 +113,14 @@ python3 components for the mxnet package.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1564691375
+export SOURCE_DATE_EPOCH=1570832527
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -127,47 +129,48 @@ export FCFLAGS="$CFLAGS -fno-lto "
 export FFLAGS="$CFLAGS -fno-lto "
 export CXXFLAGS="$CXXFLAGS -fno-lto "
 %cmake .. -DUSE_CUDA=OFF -DUSE_MKLDNN=0 -DUSE_BLAS=open
-make  %{?_smp_mflags} VERBOSE=1
+make  %{?_smp_mflags}  VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1564691375
+export SOURCE_DATE_EPOCH=1570832527
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mxnet
-cp 3rdparty/ctc_include/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_ctc_include_LICENSE
-cp 3rdparty/ctc_include/contrib/moderngpu/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_ctc_include_contrib_moderngpu_LICENSE
-cp 3rdparty/dlpack/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_dlpack_LICENSE
-cp 3rdparty/dmlc-core/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_dmlc-core_LICENSE
-cp 3rdparty/googletest/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_googletest_LICENSE
-cp 3rdparty/googletest/googlemock/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_googletest_googlemock_LICENSE
-cp 3rdparty/googletest/googlemock/scripts/generator/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_googletest_googlemock_scripts_generator_LICENSE
-cp 3rdparty/googletest/googletest/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_googletest_googletest_LICENSE
-cp 3rdparty/mkldnn/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_mkldnn_LICENSE
-cp 3rdparty/mkldnn/src/cpu/xbyak/COPYRIGHT %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_mkldnn_src_cpu_xbyak_COPYRIGHT
-cp 3rdparty/mkldnn/tests/gtests/gtest/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_mkldnn_tests_gtests_gtest_LICENSE
-cp 3rdparty/mshadow/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_mshadow_LICENSE
-cp 3rdparty/nvidia_cub/LICENSE.TXT %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_nvidia_cub_LICENSE.TXT
-cp 3rdparty/onnx-tensorrt/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_onnx-tensorrt_LICENSE
-cp 3rdparty/onnx-tensorrt/third_party/onnx/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_onnx-tensorrt_third_party_onnx_LICENSE
-cp 3rdparty/onnx-tensorrt/third_party/onnx/third_party/benchmark/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_onnx-tensorrt_third_party_onnx_third_party_benchmark_LICENSE
-cp 3rdparty/onnx-tensorrt/third_party/onnx/third_party/pybind11/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_onnx-tensorrt_third_party_onnx_third_party_pybind11_LICENSE
-cp 3rdparty/onnx-tensorrt/third_party/onnx/third_party/pybind11/tools/clang/LICENSE.TXT %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_onnx-tensorrt_third_party_onnx_third_party_pybind11_tools_clang_LICENSE.TXT
-cp 3rdparty/openmp/LICENSE.txt %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_openmp_LICENSE.txt
-cp 3rdparty/openmp/testsuite/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_openmp_testsuite_LICENSE
-cp 3rdparty/ps-lite/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_ps-lite_LICENSE
-cp 3rdparty/tvm/3rdparty/HalideIR/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_tvm_3rdparty_HalideIR_LICENSE
-cp 3rdparty/tvm/3rdparty/dlpack/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_tvm_3rdparty_dlpack_LICENSE
-cp 3rdparty/tvm/3rdparty/dmlc-core/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_tvm_3rdparty_dmlc-core_LICENSE
-cp 3rdparty/tvm/3rdparty/rang/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_tvm_3rdparty_rang_LICENSE
-cp 3rdparty/tvm/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3rdparty_tvm_LICENSE
-cp NOTICE %{buildroot}/usr/share/package-licenses/mxnet/NOTICE
-cp contrib/clojure-package/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/contrib_clojure-package_LICENSE
-cp cpp-package/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/cpp-package_LICENSE
-cp example/gluon/tree_lstm/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/example_gluon_tree_lstm_LICENSE
-cp example/rcnn/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/example_rcnn_LICENSE
-cp julia/LICENSE.md %{buildroot}/usr/share/package-licenses/mxnet/julia_LICENSE.md
-cp python/mxnet/contrib/onnx/mx2onnx/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/python_mxnet_contrib_onnx_mx2onnx_LICENSE
-cp scala-package/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/scala-package_LICENSE
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/ctc_include/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/bc66df1f4263c0c4f2ed8b3a9ee8614bccf49b02
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/ctc_include/contrib/moderngpu/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/052c6a91d3037bf6488b6672aeec78374395c358
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/dlpack/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/b8180e52873e5515c764c336a1b07748da8c8ab0
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/dmlc-core/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/2a80cf3c998c66283de014c31b3df790c60625a1
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/googletest/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/5a2314153eadadc69258a9429104cd11804ea304
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/googletest/googlemock/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/5a2314153eadadc69258a9429104cd11804ea304
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/googletest/googlemock/scripts/generator/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/1d4719e04eaa4909ab5a59ef5cb04d2a5517716e
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/googletest/googletest/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/5a2314153eadadc69258a9429104cd11804ea304
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/mkldnn/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/b62656e08adcf16ce153c1df3e835ad3afb5f9ed
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/mkldnn/src/cpu/xbyak/COPYRIGHT %{buildroot}/usr/share/package-licenses/mxnet/990f2a776789e9560c85fc1ddf2121d382223354
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/mkldnn/tests/gtests/gtest/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/5a2314153eadadc69258a9429104cd11804ea304
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/mshadow/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/eda2b89df69e68e5e87e932fdfa33e9d17fd3922
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/nvidia_cub/LICENSE.TXT %{buildroot}/usr/share/package-licenses/mxnet/3e6ec0e8366114f809511fdbc4b94a1570204b1a
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/onnx-tensorrt/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/2093bd4f3f186c655497a3e5b0f969fed37e8227
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/onnx-tensorrt/third_party/onnx/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/e8438148b753bca339b6cc352f19cf4260806351
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/onnx-tensorrt/third_party/onnx/third_party/benchmark/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/2b8b815229aa8a61e483fb4ba0588b8b6c491890
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/onnx-tensorrt/third_party/onnx/third_party/pybind11/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/71a7f368f90789db807331860cb72d10abdb4acb
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/onnx-tensorrt/third_party/onnx/third_party/pybind11/tools/clang/LICENSE.TXT %{buildroot}/usr/share/package-licenses/mxnet/0ebae4fcb66d6688d40b27451ac84cf5b5c8862a
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/openmp/LICENSE.txt %{buildroot}/usr/share/package-licenses/mxnet/c29a939b03345c8bf3daf1acb7732f4bdd0232c3
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/openmp/testsuite/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/d8a4f92349ed879756a7d004a8ce94879b548a19
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/ps-lite/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/6f4d766fd18fb785a6b8dabcd78ce3ad0f17dd42
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/tvm/3rdparty/HalideIR/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/1833ecc23b12f57da7df0695e13139172a534df3
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/tvm/3rdparty/dlpack/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/b8180e52873e5515c764c336a1b07748da8c8ab0
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/tvm/3rdparty/dmlc-core/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/2a80cf3c998c66283de014c31b3df790c60625a1
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/tvm/3rdparty/rang/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/24944bf7920108f5a4790e6071c32e9102760c37
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/tvm/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/92170cdc034b2ff819323ff670d3b7266c8bffcd
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/2a8b39e7cb2258aa51857900277805fd4d9b7c29
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/NOTICE %{buildroot}/usr/share/package-licenses/mxnet/a85d8a69f4e1fcc701ef9d45603fefa663d19c8a
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/contrib/clojure-package/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/9cf27e388af2632586cd49a7b5bc8bf93c0caeb9
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/cpp-package/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/2a80cf3c998c66283de014c31b3df790c60625a1
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/example/gluon/tree_lstm/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/3b3274a4d15e949a12515588e9f46495f3729609
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/example/rcnn/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/d4f6bc536bf0b93250549871eaf4e0997274b605
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/julia/LICENSE.md %{buildroot}/usr/share/package-licenses/mxnet/d9e577d16a2a1f25b4cd0e65a3c97b44939bda9b
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/python/mxnet/contrib/onnx/mx2onnx/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/5a7a70a4faf7a46b3195f97c29d6493ad4d14ddb
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/scala-package/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/669a1e53b9dd9df3474300d3d959bb85bad75945
 pushd clr-build
 %make_install
 popd
@@ -315,40 +318,35 @@ popd
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/mxnet/3rdparty_ctc_include_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_ctc_include_contrib_moderngpu_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_dlpack_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_dmlc-core_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_googletest_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_googletest_googlemock_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_googletest_googlemock_scripts_generator_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_googletest_googletest_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_mkldnn_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_mkldnn_src_cpu_xbyak_COPYRIGHT
-/usr/share/package-licenses/mxnet/3rdparty_mkldnn_tests_gtests_gtest_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_mshadow_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_nvidia_cub_LICENSE.TXT
-/usr/share/package-licenses/mxnet/3rdparty_onnx-tensorrt_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_onnx-tensorrt_third_party_onnx_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_onnx-tensorrt_third_party_onnx_third_party_benchmark_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_onnx-tensorrt_third_party_onnx_third_party_pybind11_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_onnx-tensorrt_third_party_onnx_third_party_pybind11_tools_clang_LICENSE.TXT
-/usr/share/package-licenses/mxnet/3rdparty_openmp_LICENSE.txt
-/usr/share/package-licenses/mxnet/3rdparty_openmp_testsuite_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_ps-lite_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_tvm_3rdparty_HalideIR_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_tvm_3rdparty_dlpack_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_tvm_3rdparty_dmlc-core_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_tvm_3rdparty_rang_LICENSE
-/usr/share/package-licenses/mxnet/3rdparty_tvm_LICENSE
-/usr/share/package-licenses/mxnet/NOTICE
-/usr/share/package-licenses/mxnet/contrib_clojure-package_LICENSE
-/usr/share/package-licenses/mxnet/cpp-package_LICENSE
-/usr/share/package-licenses/mxnet/example_gluon_tree_lstm_LICENSE
-/usr/share/package-licenses/mxnet/example_rcnn_LICENSE
-/usr/share/package-licenses/mxnet/julia_LICENSE.md
-/usr/share/package-licenses/mxnet/python_mxnet_contrib_onnx_mx2onnx_LICENSE
-/usr/share/package-licenses/mxnet/scala-package_LICENSE
+/usr/share/package-licenses/mxnet/052c6a91d3037bf6488b6672aeec78374395c358
+/usr/share/package-licenses/mxnet/0ebae4fcb66d6688d40b27451ac84cf5b5c8862a
+/usr/share/package-licenses/mxnet/1833ecc23b12f57da7df0695e13139172a534df3
+/usr/share/package-licenses/mxnet/1d4719e04eaa4909ab5a59ef5cb04d2a5517716e
+/usr/share/package-licenses/mxnet/2093bd4f3f186c655497a3e5b0f969fed37e8227
+/usr/share/package-licenses/mxnet/24944bf7920108f5a4790e6071c32e9102760c37
+/usr/share/package-licenses/mxnet/2a80cf3c998c66283de014c31b3df790c60625a1
+/usr/share/package-licenses/mxnet/2a8b39e7cb2258aa51857900277805fd4d9b7c29
+/usr/share/package-licenses/mxnet/2b8b815229aa8a61e483fb4ba0588b8b6c491890
+/usr/share/package-licenses/mxnet/3b3274a4d15e949a12515588e9f46495f3729609
+/usr/share/package-licenses/mxnet/3e6ec0e8366114f809511fdbc4b94a1570204b1a
+/usr/share/package-licenses/mxnet/5a2314153eadadc69258a9429104cd11804ea304
+/usr/share/package-licenses/mxnet/5a7a70a4faf7a46b3195f97c29d6493ad4d14ddb
+/usr/share/package-licenses/mxnet/669a1e53b9dd9df3474300d3d959bb85bad75945
+/usr/share/package-licenses/mxnet/6f4d766fd18fb785a6b8dabcd78ce3ad0f17dd42
+/usr/share/package-licenses/mxnet/71a7f368f90789db807331860cb72d10abdb4acb
+/usr/share/package-licenses/mxnet/92170cdc034b2ff819323ff670d3b7266c8bffcd
+/usr/share/package-licenses/mxnet/990f2a776789e9560c85fc1ddf2121d382223354
+/usr/share/package-licenses/mxnet/9cf27e388af2632586cd49a7b5bc8bf93c0caeb9
+/usr/share/package-licenses/mxnet/a85d8a69f4e1fcc701ef9d45603fefa663d19c8a
+/usr/share/package-licenses/mxnet/b62656e08adcf16ce153c1df3e835ad3afb5f9ed
+/usr/share/package-licenses/mxnet/b8180e52873e5515c764c336a1b07748da8c8ab0
+/usr/share/package-licenses/mxnet/bc66df1f4263c0c4f2ed8b3a9ee8614bccf49b02
+/usr/share/package-licenses/mxnet/c29a939b03345c8bf3daf1acb7732f4bdd0232c3
+/usr/share/package-licenses/mxnet/d4f6bc536bf0b93250549871eaf4e0997274b605
+/usr/share/package-licenses/mxnet/d8a4f92349ed879756a7d004a8ce94879b548a19
+/usr/share/package-licenses/mxnet/d9e577d16a2a1f25b4cd0e65a3c97b44939bda9b
+/usr/share/package-licenses/mxnet/e8438148b753bca339b6cc352f19cf4260806351
+/usr/share/package-licenses/mxnet/eda2b89df69e68e5e87e932fdfa33e9d17fd3922
 
 %files python
 %defattr(-,root,root,-)

@@ -5,3 +5,6 @@ mxnet
 tensorrt
 pycuda
 beignet-dev
+apache-maven
+buildreq-mvn
+gradle
