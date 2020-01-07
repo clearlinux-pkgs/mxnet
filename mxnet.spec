@@ -6,7 +6,7 @@
 #
 Name     : mxnet
 Version  : 1.5.0
-Release  : 21
+Release  : 22
 URL      : https://github.com/apache/incubator-mxnet/releases/download/1.5.0/apache-mxnet-src-1.5.0-incubating.tar.gz
 Source0  : https://github.com/apache/incubator-mxnet/releases/download/1.5.0/apache-mxnet-src-1.5.0-incubating.tar.gz
 Source1 : https://github.com/apache/incubator-mxnet/releases/download/1.5.0/apache-mxnet-src-1.5.0-incubating.tar.gz.asc
