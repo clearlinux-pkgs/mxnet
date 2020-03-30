@@ -6,13 +6,13 @@
 #
 Name     : mxnet
 Version  : 1.5.0
-Release  : 23
+Release  : 24
 URL      : https://github.com/apache/incubator-mxnet/releases/download/1.5.0/apache-mxnet-src-1.5.0-incubating.tar.gz
 Source0  : https://github.com/apache/incubator-mxnet/releases/download/1.5.0/apache-mxnet-src-1.5.0-incubating.tar.gz
-Source1 : https://github.com/apache/incubator-mxnet/releases/download/1.5.0/apache-mxnet-src-1.5.0-incubating.tar.gz.asc
+Source1  : https://github.com/apache/incubator-mxnet/releases/download/1.5.0/apache-mxnet-src-1.5.0-incubating.tar.gz.asc
 Summary  : 'Perl interface to MXNet Gluon ModelZoo'
 Group    : Development/Tools
-License  : Apache-2.0 BSD-2-Clause BSD-3-Clause BSD-3-Clause-LBNL MIT NCSA Unlicense
+License  : Apache-2.0 BSD-2-Clause BSD-3-Clause BSD-3-Clause-LBNL ICU Libpng MIT NCSA Unlicense Zlib libtiff
 Requires: mxnet-license = %{version}-%{release}
 Requires: mxnet-python = %{version}-%{release}
 Requires: mxnet-python3 = %{version}-%{release}
@@ -26,7 +26,6 @@ Requires: onnx
 Requires: python-graphviz
 BuildRequires : PyYAML
 BuildRequires : Vulkan-Headers-dev Vulkan-Loader-dev Vulkan-Tools
-BuildRequires : apache-spark
 BuildRequires : attrs
 BuildRequires : boost-dev
 BuildRequires : buildreq-cmake
@@ -110,6 +109,7 @@ python3 components for the mxnet package.
 
 %prep
 %setup -q -n apache-mxnet-src-1.5.0-incubating
+cd %{_builddir}/apache-mxnet-src-1.5.0-incubating
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
@@ -120,20 +120,23 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1570832527
+export SOURCE_DATE_EPOCH=1585605590
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
-export CFLAGS="$CFLAGS -fno-lto "
-export FCFLAGS="$CFLAGS -fno-lto "
-export FFLAGS="$CFLAGS -fno-lto "
-export CXXFLAGS="$CXXFLAGS -fno-lto "
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %cmake .. -DUSE_CUDA=OFF -DUSE_MKLDNN=0 -DUSE_BLAS=open
 make  %{?_smp_mflags}  VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1570832527
+export SOURCE_DATE_EPOCH=1585605590
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/mxnet
 cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/3rdparty/ctc_include/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/bc66df1f4263c0c4f2ed8b3a9ee8614bccf49b02
@@ -171,6 +174,7 @@ cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/example/rcnn/LICENSE %{buildro
 cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/julia/LICENSE.md %{buildroot}/usr/share/package-licenses/mxnet/d9e577d16a2a1f25b4cd0e65a3c97b44939bda9b
 cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/python/mxnet/contrib/onnx/mx2onnx/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/5a7a70a4faf7a46b3195f97c29d6493ad4d14ddb
 cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/scala-package/LICENSE %{buildroot}/usr/share/package-licenses/mxnet/669a1e53b9dd9df3474300d3d959bb85bad75945
+cp %{_builddir}/apache-mxnet-src-1.5.0-incubating/tools/dependencies/LICENSE.binary.dependencies %{buildroot}/usr/share/package-licenses/mxnet/18be1a8bf0e2491fd6d41a712a677cc697095674
 pushd clr-build
 %make_install
 popd
@@ -321,6 +325,7 @@ popd
 /usr/share/package-licenses/mxnet/052c6a91d3037bf6488b6672aeec78374395c358
 /usr/share/package-licenses/mxnet/0ebae4fcb66d6688d40b27451ac84cf5b5c8862a
 /usr/share/package-licenses/mxnet/1833ecc23b12f57da7df0695e13139172a534df3
+/usr/share/package-licenses/mxnet/18be1a8bf0e2491fd6d41a712a677cc697095674
 /usr/share/package-licenses/mxnet/1d4719e04eaa4909ab5a59ef5cb04d2a5517716e
 /usr/share/package-licenses/mxnet/2093bd4f3f186c655497a3e5b0f969fed37e8227
 /usr/share/package-licenses/mxnet/24944bf7920108f5a4790e6071c32e9102760c37
