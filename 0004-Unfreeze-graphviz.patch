@@ -40,13 +40,13 @@ index 43311c7..3fec015 100644
  with_cython = False
  if '--with-cython' in sys.argv:
 diff --git a/tools/pip/setup.py b/tools/pip/setup.py
-index 3905a69..bef5c88 100644
+index dd430f5..3f4a6ea 100644
 --- a/tools/pip/setup.py
 +++ b/tools/pip/setup.py
-@@ -54,7 +54,7 @@ class BinaryDistribution(Distribution):
+@@ -64,7 +64,7 @@ class BinaryDistribution(Distribution):
  DEPENDENCIES = [
-     'numpy>1.16.0,<2.0.0',
-     'requests>=2.20.0',
+     'numpy<2.0.0,>1.16.0',
+     'requests>=2.20.0,<3',
 -    'graphviz<0.9.0,>=0.8.1'
 +    'graphviz'
  ]

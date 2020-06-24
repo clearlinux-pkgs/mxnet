@@ -4,35 +4,25 @@ Date: Tue, 6 Nov 2018 16:43:22 -0800
 Subject: [PATCH] Use system mkldnn
 
 [Update for 2019-08-01]: rebased against 1.5.0 release
+[Update for 2020-06-23]: rebased against 1.6.0 release
+
+Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
 ---
- CMakeLists.txt | 13 -------------
- 1 file changed, 13 deletions(-)
+ CMakeLists.txt | 4 ----
+ 1 file changed, 4 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 2142a09..db81e99 100644
+index 12bc195..02820f2 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -247,23 +247,10 @@ if(ENABLE_TESTCOVERAGE)
- endif()
- 
- if(USE_MKLDNN)
--  include(cmake/DownloadMKLML.cmake)
--  # CPU architecture (e.g., C5) can't run on another architecture (e.g., g3).
--  if(NOT MSVC)
--    set(ARCH_OPT_FLAGS "-mtune=generic")
--  else()
--    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /EHsc")
--    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHsc /Gy")
--  endif()
--
-   set(WITH_TEST OFF CACHE INTERNAL "" FORCE)
-   set(WITH_EXAMPLE OFF CACHE INTERNAL "" FORCE)
-   set(ARCH_OPT_FLAGS "" CACHE INTERNAL "" FORCE)
+@@ -288,10 +288,6 @@ if(USE_MKLDNN)
+   set(MKLDNN_USE_MKL NONE CACHE INTERNAL "" FORCE)
+   set(MKLDNN_ENABLE_JIT_PROFILING OFF CACHE INTERNAL "" FORCE)
  
 -  add_subdirectory(3rdparty/mkldnn)
 -
 -  include_directories(3rdparty/mkldnn/include)
 -  include_directories(${PROJECT_BINARY_DIR}/3rdparty/mkldnn/include)
-   add_definitions(-DUSE_MKL=1)
-   add_definitions(-DCUB_MKL=1)
    add_definitions(-DMXNET_USE_MKLDNN=1)
+   list(APPEND mxnet_LINKER_LIBS mkldnn)
+ endif()
