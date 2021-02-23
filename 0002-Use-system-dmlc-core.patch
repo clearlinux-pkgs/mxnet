@@ -6,6 +6,7 @@ Subject: [PATCH] Use system dmlc-core
 [Update for 2019-08-01]: Rebased against 1.5.0; do not attempt to
                          install the 3rd-party headers either
 [Update for 2020-06-23]: Rebased against 1.6.0
+[Update for 2020-10-19]: Rebased against 1.7.0
 
 Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
 ---
@@ -13,10 +14,10 @@ Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
  1 file changed, 6 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 02820f2..11e42a0 100644
+index 6a19098..8fd0300 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -324,7 +324,6 @@ include_directories("3rdparty/mshadow")
+@@ -323,7 +323,6 @@ include_directories("include")
  include_directories("3rdparty/nvidia_cub")
  include_directories("3rdparty/tvm/nnvm/include")
  include_directories("3rdparty/tvm/include")
@@ -24,7 +25,7 @@ index 02820f2..11e42a0 100644
  include_directories("3rdparty/dlpack/include")
  
  # commented out until PR goes through
-@@ -482,10 +481,6 @@ if(USE_CUDNN)
+@@ -483,10 +482,6 @@ if(USE_CUDNN)
    endif()
  endif()
  
@@ -32,10 +33,10 @@ index 02820f2..11e42a0 100644
 -  add_subdirectory("3rdparty/dmlc-core")
 -endif()
 -
- add_subdirectory("3rdparty/mshadow")
  FILE(GLOB_RECURSE SOURCE "src/*.cc" "src/*.h" "include/*.h")
  FILE(GLOB_RECURSE CUDA "src/*.cu" "src/*.cuh")
-@@ -834,7 +829,6 @@ install(TARGETS ${MXNET_INSTALL_TARGETS}
+ 
+@@ -861,7 +856,6 @@ install(TARGETS ${MXNET_INSTALL_TARGETS}
  #       https://cmake.org/cmake/help/v3.0/module/GNUInstallDirs.html
  
  install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/dlpack/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})

@@ -10,7 +10,7 @@ statement to a location less likely to produce future rebase conflicts.
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/python/setup.py b/python/setup.py
-index e8545a5..43311c7 100644
+index dcd84ce..5137f79 100644
 --- a/python/setup.py
 +++ b/python/setup.py
 @@ -21,6 +21,7 @@ from __future__ import absolute_import
@@ -21,7 +21,7 @@ index e8545a5..43311c7 100644
  
  # need to use distutils.core for correct placement of cython dll
  kwargs = {}
-@@ -110,7 +111,7 @@ setup(name='mxnet',
+@@ -121,7 +122,7 @@ setup(name='mxnet',
        version=__version__,
        description=open(os.path.join(CURRENT_DIR, 'README.md')).read(),
        packages=find_packages(),

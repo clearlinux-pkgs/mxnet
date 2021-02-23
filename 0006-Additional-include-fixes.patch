@@ -1,0 +1,23 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Patrick McCarty <patrick.mccarty@intel.com>
+Date: Tue, 20 Oct 2020 01:59:52 +0000
+Subject: [PATCH] Additional include fixes
+
+Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
+---
+ src/operator/tensor/elemwise_binary_broadcast_op.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/operator/tensor/elemwise_binary_broadcast_op.h b/src/operator/tensor/elemwise_binary_broadcast_op.h
+index 774c87a..4607098 100644
+--- a/src/operator/tensor/elemwise_binary_broadcast_op.h
++++ b/src/operator/tensor/elemwise_binary_broadcast_op.h
+@@ -33,7 +33,7 @@
+ #include <utility>
+ #include "../mshadow_op.h"
+ #include "../elemwise_op_common.h"
+-#include "./elemwise_binary_op.h"
++#include "./elemwise_binary_op-inl.h"
+ #include "../operator_common.h"
+ #include "broadcast_reduce-inl.h"
+ 

@@ -1,4 +1,6 @@
 0001-Use-system-mkldnn.patch
 0002-Use-system-dmlc-core.patch
 0003-Put-.so-in-python-libdir.patch
-0004-Unfreeze-graphviz.patch
+0004-Unfreeze-some-dependencies.patch
+0005-Update-elemwise_binary_broadcast_op_basic.cu.patch
+0006-Additional-include-fixes.patch

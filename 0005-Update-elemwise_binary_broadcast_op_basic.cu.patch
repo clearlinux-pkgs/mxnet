@@ -1,0 +1,27 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: chinakook <chinakook@msn.com>
+Date: Tue, 21 Jul 2020 00:44:15 +0800
+Subject: [PATCH] Update elemwise_binary_broadcast_op_basic.cu
+
+This fix https://github.com/apache/incubator-mxnet/issues/18170
+refer to the fix: https://github.com/apache/incubator-mxnet/pull/18357
+
+Upstream-Status: Pending
+Reference: https://github.com/apache/incubator-mxnet/pull/18761
+---
+ src/operator/tensor/elemwise_binary_broadcast_op_basic.cu | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/operator/tensor/elemwise_binary_broadcast_op_basic.cu b/src/operator/tensor/elemwise_binary_broadcast_op_basic.cu
+index aa0850a..75ab2ae 100644
+--- a/src/operator/tensor/elemwise_binary_broadcast_op_basic.cu
++++ b/src/operator/tensor/elemwise_binary_broadcast_op_basic.cu
+@@ -23,7 +23,7 @@
+  * \brief GPU Implementation of basic functions for elementwise binary broadcast operator.
+  */
+ #include "./elemwise_unary_op.h"
+-#include "./elemwise_binary_op.h"
++#include "./elemwise_binary_op-inl.h"
+ #include "./elemwise_binary_broadcast_op.h"
+ 
+ namespace mxnet {

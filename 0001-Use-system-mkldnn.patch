@@ -5,6 +5,7 @@ Subject: [PATCH] Use system mkldnn
 
 [Update for 2019-08-01]: rebased against 1.5.0 release
 [Update for 2020-06-23]: rebased against 1.6.0 release
+[Update for 2020-10-19]: rebased against 1.7.0 release
 
 Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
 ---
@@ -12,17 +13,17 @@ Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
  1 file changed, 4 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 12bc195..02820f2 100644
+index 437d016..6a19098 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -288,10 +288,6 @@ if(USE_MKLDNN)
-   set(MKLDNN_USE_MKL NONE CACHE INTERNAL "" FORCE)
-   set(MKLDNN_ENABLE_JIT_PROFILING OFF CACHE INTERNAL "" FORCE)
+@@ -290,10 +290,6 @@ if(USE_MKLDNN)
+       set(MKLDNN_CPU_RUNTIME SEQ CACHE INTERNAL "" FORCE)
+   endif()
  
 -  add_subdirectory(3rdparty/mkldnn)
 -
 -  include_directories(3rdparty/mkldnn/include)
 -  include_directories(${PROJECT_BINARY_DIR}/3rdparty/mkldnn/include)
    add_definitions(-DMXNET_USE_MKLDNN=1)
-   list(APPEND mxnet_LINKER_LIBS mkldnn)
- endif()
+   list(APPEND mxnet_LINKER_LIBS dnnl)
+   set(INSTALL_MKLDNN ON)

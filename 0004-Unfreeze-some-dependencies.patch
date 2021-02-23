@@ -1,33 +1,42 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Patrick McCarty <patrick.mccarty@intel.com>
 Date: Fri, 11 Oct 2019 14:38:03 -0700
-Subject: [PATCH] Unfreeze graphviz
+Subject: [PATCH] Unfreeze some dependencies
 
 The python-graphviz package has had several releases since the 0.8.*
 timeframe over the past year, so we are bumping it forward. mxnet is the
 only package in the distro requiring an older version.
 
+[Update 2020-10-19]: Also unfreeze numpy, since the system version is
+1.19.2 at this time, and it looks like numpy 1.19 compatibility fixes
+were merged in time for the 1.7.0 release (see [0] and [1]).
+
+[0]: https://github.com/apache/incubator-mxnet/pull/18649
+[1]: https://github.com/apache/incubator-mxnet/pull/18653
+
 Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
 ---
- ci/qemu/mxnet_requirements.txt | 2 +-
+ ci/qemu/mxnet_requirements.txt | 4 ++--
  python/setup.py                | 2 +-
  tools/pip/setup.py             | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/ci/qemu/mxnet_requirements.txt b/ci/qemu/mxnet_requirements.txt
-index 2ab0fd9..9d28a0f 100644
+index 2e5160b..ce4f29a 100644
 --- a/ci/qemu/mxnet_requirements.txt
 +++ b/ci/qemu/mxnet_requirements.txt
-@@ -1,6 +1,6 @@
+@@ -1,7 +1,7 @@
  urllib3<1.23,>=1.21.1
  requests<2.19.0,>=2.18.4
 -graphviz<0.9.0,>=0.8.1
+-numpy>1.16.0,<1.19.0  # Restrict numpy version to < 1.19.0 due to https://github.com/apache/incubator-mxnet/issues/18600
 +graphviz
- numpy>1.16.0,<2.0.0
++numpy
  mock
  nose
+ nose-timer
 diff --git a/python/setup.py b/python/setup.py
-index 43311c7..3fec015 100644
+index 5137f79..3874c97 100644
 --- a/python/setup.py
 +++ b/python/setup.py
 @@ -31,7 +31,7 @@ if "--inplace" in sys.argv:
@@ -40,7 +49,7 @@ index 43311c7..3fec015 100644
  with_cython = False
  if '--with-cython' in sys.argv:
 diff --git a/tools/pip/setup.py b/tools/pip/setup.py
-index dd430f5..3f4a6ea 100644
+index d010517..47bb2a9 100644
 --- a/tools/pip/setup.py
 +++ b/tools/pip/setup.py
 @@ -64,7 +64,7 @@ class BinaryDistribution(Distribution):
