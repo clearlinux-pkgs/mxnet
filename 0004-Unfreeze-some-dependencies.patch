@@ -11,30 +11,18 @@ only package in the distro requiring an older version.
 1.19.2 at this time, and it looks like numpy 1.19 compatibility fixes
 were merged in time for the 1.7.0 release (see [0] and [1]).
 
+[Update 2021-03-08]: Drop patch for ci/qemu/requirements.txt, since that
+file no longer exists.
+
 [0]: https://github.com/apache/incubator-mxnet/pull/18649
 [1]: https://github.com/apache/incubator-mxnet/pull/18653
 
 Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
 ---
- ci/qemu/mxnet_requirements.txt | 4 ++--
- python/setup.py                | 2 +-
- tools/pip/setup.py             | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ python/setup.py    | 2 +-
+ tools/pip/setup.py | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/ci/qemu/mxnet_requirements.txt b/ci/qemu/mxnet_requirements.txt
-index 2e5160b..ce4f29a 100644
---- a/ci/qemu/mxnet_requirements.txt
-+++ b/ci/qemu/mxnet_requirements.txt
-@@ -1,7 +1,7 @@
- urllib3<1.23,>=1.21.1
- requests<2.19.0,>=2.18.4
--graphviz<0.9.0,>=0.8.1
--numpy>1.16.0,<1.19.0  # Restrict numpy version to < 1.19.0 due to https://github.com/apache/incubator-mxnet/issues/18600
-+graphviz
-+numpy
- mock
- nose
- nose-timer
 diff --git a/python/setup.py b/python/setup.py
 index 5137f79..3874c97 100644
 --- a/python/setup.py
@@ -49,7 +37,7 @@ index 5137f79..3874c97 100644
  with_cython = False
  if '--with-cython' in sys.argv:
 diff --git a/tools/pip/setup.py b/tools/pip/setup.py
-index d010517..47bb2a9 100644
+index 1950f1d..f864cd2 100644
 --- a/tools/pip/setup.py
 +++ b/tools/pip/setup.py
 @@ -64,7 +64,7 @@ class BinaryDistribution(Distribution):

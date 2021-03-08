@@ -7,6 +7,7 @@ Subject: [PATCH] Use system dmlc-core
                          install the 3rd-party headers either
 [Update for 2020-06-23]: Rebased against 1.6.0
 [Update for 2020-10-19]: Rebased against 1.7.0
+[Update for 2020-03-08]: Rebased against 1.8.0
 
 Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
 ---
@@ -14,18 +15,18 @@ Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
  1 file changed, 6 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 6a19098..8fd0300 100644
+index ab20736..cbd25b9 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -323,7 +323,6 @@ include_directories("include")
- include_directories("3rdparty/nvidia_cub")
+@@ -337,7 +337,6 @@ endforeach()
+ include_directories("include")
  include_directories("3rdparty/tvm/nnvm/include")
  include_directories("3rdparty/tvm/include")
 -include_directories("3rdparty/dmlc-core/include")
  include_directories("3rdparty/dlpack/include")
  
- # commented out until PR goes through
-@@ -483,10 +482,6 @@ if(USE_CUDNN)
+ 
+@@ -498,10 +497,6 @@ if(USE_CUDNN)
    endif()
  endif()
  
@@ -36,11 +37,11 @@ index 6a19098..8fd0300 100644
  FILE(GLOB_RECURSE SOURCE "src/*.cc" "src/*.h" "include/*.h")
  FILE(GLOB_RECURSE CUDA "src/*.cu" "src/*.cuh")
  
-@@ -861,7 +856,6 @@ install(TARGETS ${MXNET_INSTALL_TARGETS}
- #       https://cmake.org/cmake/help/v3.0/module/GNUInstallDirs.html
- 
+@@ -894,7 +889,6 @@ install(TARGETS ${MXNET_INSTALL_TARGETS}
+   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+ )
  install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/dlpack/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 -install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/dmlc-core/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
- if(USE_MKLDNN)
-   install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/mkldnn/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
- endif()
+ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/mshadow/mshadow/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mshadow)
+ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/mxnet/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mxnet)
+ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/tvm/nnvm/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
