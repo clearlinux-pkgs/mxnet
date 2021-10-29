@@ -4,7 +4,7 @@
 #
 Name     : mxnet
 Version  : 1.8.0
-Release  : 42
+Release  : 43
 URL      : https://ftp.osuosl.org/pub/apache/incubator/mxnet/1.8.0/apache-mxnet-src-1.8.0-incubating.tar.gz
 Source0  : https://ftp.osuosl.org/pub/apache/incubator/mxnet/1.8.0/apache-mxnet-src-1.8.0-incubating.tar.gz
 Summary  : A deep learning framework designed for both efficiency and flexibility
